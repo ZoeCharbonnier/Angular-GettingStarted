@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IProduct } from '../../models/product';
 
 @Component({
   selector: 'pm-product-list',
@@ -7,7 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductListComponent implements OnInit {
   pageTitle: string = 'Product List';
-  products: any[] = [
+  imageWidth: number = 50;
+  imageMargin: number = 2;
+  showImage: boolean = false;
+  private _listFilter: string = '';
+  filteredProducts: IProduct[] = [];
+
+  public get listFilter(): string {
+    return this._listFilter;
+  }
+  public set listFilter(value: string) {
+    this._listFilter = value;
+    console.log('In setter:', this._listFilter);
+    this.filteredProducts = this.performFilter(value);
+  }
+
+  products: IProduct[] = [
     {
       productId: 1,
       productName: 'Leaf Rake',
@@ -61,5 +77,18 @@ export class ProductListComponent implements OnInit {
   ];
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.filteredProducts = this.products;
+  }
+
+  toggleImage(): void {
+    this.showImage = !this.showImage;
+    console.log(this.showImage);
+  }
+
+  performFilter(filterBy: string): IProduct[] {
+    return this.products.filter((product: IProduct) =>
+      product.productName.toLowerCase().includes(filterBy.toLowerCase())
+    );
+  }
 }
