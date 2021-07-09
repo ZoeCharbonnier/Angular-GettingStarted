@@ -91,4 +91,8 @@ export class ProductListComponent implements OnInit {
       product.productName.toLowerCase().includes(filterBy.toLowerCase())
     );
   }
+
+  onRatingClicked(message: string): void {
+    this.pageTitle = `Product List: ${message}`;
+  }
 }
